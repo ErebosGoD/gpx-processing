@@ -1,0 +1,4 @@
+*.db
+*.gpx
+__pycache__/
+*.pyc
