@@ -37,14 +37,6 @@ function loadInitials() {
         }
     });
 }
-// Event-Handler for initials select
-$('#initials_select').change(function () {
-    var initials = $(this).val();
-    if (initials) {
-        loadCars(initials);  // load cars based on selected initials
-        displayTrack(null);  // don't display track just yet, even if initials are selected
-    }
-});
 
 // Function for loading cars based on selected initials
 function loadCars(initials) {
@@ -118,6 +110,15 @@ $('#reset-filters').click(function () {
         }
     });
 });
+
+
+// Event-Handler für den Button "Alte Version öffnen"
+const oldVersionButton = document.getElementById('old-version-button');
+oldVersionButton.addEventListener('click', function () {
+    // Weiterleitung zur alten Version
+    window.location.href = '/old_version'; // Passe die Route entsprechend an
+});
+
 
 
 // load initials on page startup

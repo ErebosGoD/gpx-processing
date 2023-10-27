@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPX One Pager</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <!-- Dark Mode-Switch -->
+    <button id="dark-mode-toggle">Dark Mode</button>
+    <button id="new-version">New Version</button>
+    <h1>GPX One Pager</h1>
+
+    <!-- Container for dropdown menus and map -->
+    <div class="container">
+        <div class="menu-container">
+            <!-- Dropdown-Menü for initials -->
+            <div class="select-old">
+                <label for="initials_select_old">Initials:</label>
+                <select id="initials_select_old">
+                    <option value="">Choose Initials</option>
+                </select>
+            </div>
+            <!-- Dropdown-Menü for tracks -->
+            <div class="select-old">
+                <label for="tracks_select_old">Tracks:</label>
+                <select id="tracks_select_old">
+                    <option value="">Choose a Track</option>
+                </select>
+            </div>
+        </div>
+        <!-- container for map -->
+        <div class="map-container">
+            {{ map_html|safe }}
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='scriptsOld.js') }}"></script>
+
+</body>
+
+</html>

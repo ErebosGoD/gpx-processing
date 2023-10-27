@@ -16,7 +16,8 @@ class GpxParser():
         self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS files (
                 file_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                filename TEXT
+                filename TEXT,
+                invalid_structure INTEGER
             )
         ''')
         # table for drivers
@@ -68,7 +69,7 @@ class GpxParser():
                 if not current_file:
                     # insert filename into file table
                     self.cursor.execute(
-                        'INSERT INTO files (filename) VALUES (?)', (filename,))
+                        'INSERT INTO files (filename,invalid_structure) VALUES (?,?)', (filename, 0))
 
                     # create file_path
                     gpx_file_path = os.path.join(gpx_directory, filename)
@@ -107,6 +108,12 @@ class GpxParser():
 
                     track_id = self.cursor.lastrowid
 
+                    if gpx.waypoints:
+                        print(
+                            f"No valid XML structure for file:{filename}")
+                        self.cursor.execute(
+                            "UPDATE files SET invalid_structure = 1 WHERE filename = (?)", (filename,))
+
                     if gpx.tracks:
                         for track in gpx.tracks:
                             if track.segments:
@@ -115,11 +122,17 @@ class GpxParser():
                                     for point in segment.points:
                                         self.cursor.execute('INSERT INTO waypoints (track_id, latitude, longitude, timestamp) VALUES (?, ?, ?, ?)',
                                                             (track_id, point.latitude, point.longitude, str(point.time)))
+                            else:
+                                print(
+                                    f"No valid XML structure for file:{filename}")
+                                self.cursor.execute(
+                                    "UPDATE files SET invalid_structure = 1 WHERE filename = (?)", (filename,))
                     else:
                         # If there are no tracks, insert individual waypoints
                         for waypoint in gpx.waypoints:
                             self.cursor.execute('INSERT INTO waypoints (track_id, latitude, longitude, timestamp) VALUES (?, ?, ?, ?)',
                                                 (track_id, waypoint.latitude, waypoint.longitude, str(waypoint.time)))
+
                     self.connection.commit()
 
     # get initials
@@ -127,6 +140,7 @@ class GpxParser():
         self.cursor.execute('SELECT DISTINCT initials FROM drivers')
         initials = [row[0] for row in self.cursor.fetchall()]
         self.connection.commit()
+        print(initials)
         return initials
 
     # get cars for given initials
@@ -152,6 +166,28 @@ class GpxParser():
         INNER JOIN cars ON tracks.car_id = cars.car_id
         WHERE drivers.initials = ? AND cars.license_plate = ? AND timestamp BETWEEN ? AND ?
         ''', (initials, car, start_date, end_date))
+
+        waypoints = self.cursor.fetchall()
+        return waypoints
+
+    def get_track_ids_for_initials_id(self, initials):
+        # get tracks for chosen initials
+        self.cursor.execute('''
+            SELECT tracks.track_id
+            FROM tracks
+            INNER JOIN drivers ON tracks.driver_id = drivers.driver_id
+            WHERE drivers.initials = ?
+        ''', (initials,))
+
+        track_ids = [row[0] for row in self.cursor.fetchall()]
+        return track_ids
+
+    def get_track_for_track_id(self, track_id):
+        self.cursor.execute('''
+        SELECT latitude, longitude
+        FROM waypoints
+        WHERE track_id = ?
+        ''', (track_id,))
 
         waypoints = self.cursor.fetchall()
         return waypoints
