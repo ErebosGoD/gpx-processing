@@ -140,7 +140,6 @@ class GpxParser():
         self.cursor.execute('SELECT DISTINCT initials FROM drivers')
         initials = [row[0] for row in self.cursor.fetchall()]
         self.connection.commit()
-        print(initials)
         return initials
 
     # get cars for given initials

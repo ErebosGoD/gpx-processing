@@ -38,6 +38,15 @@ function loadInitials() {
     });
 }
 
+// Event-Handler for initials
+$('#initials_select').change(function () {
+    var initials = $(this).val();
+    if (initials) {
+        loadCars(initials);
+        displayTrack(null);
+    }
+});
+
 // Function for loading cars based on selected initials
 function loadCars(initials) {
     $.ajax({
