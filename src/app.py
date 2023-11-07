@@ -34,9 +34,8 @@ def old_version():
 def get_initials():
     return jsonify(gpx_parser.get_initials())
 
+
 # old routes for display each track for the selected initials
-
-
 @app.route('/get_tracks/<initials>', methods=['GET'])
 def get_tracks(initials):
 
@@ -50,14 +49,14 @@ def display_track(track_id):
     waypoints = gpx_parser.get_track_for_track_id(track_id)
 
     # create map with default location germany
-    m = folium.Map(location=[51.1657, 10.4515], zoom_start=6)
+    map = folium.Map(location=[51.1657, 10.4515], zoom_start=6)
 
     if waypoints:
         folium.PolyLine(
             locations=waypoints,
             color='blue',
             weight=3,
-        ).add_to(m)
+        ).add_to(map)
 
         # calculate map borders
         latitudes = [wp[0] for wp in waypoints]
@@ -67,15 +66,14 @@ def display_track(track_id):
         bounds = [[min_lat, min_lon], [max_lat, max_lon]]
 
         # fit map to bounds of container
-        m.fit_bounds(bounds)
+        map.fit_bounds(bounds)
 
     # return map
-    map_html = m.get_root()._repr_html_()
+    map_html = map.get_root()._repr_html_()
     return map_html
 
+
 # display tracks based on initials, car, start date and end date
-
-
 @app.route('/display_track/<initials>/<car>/<start_date>/<end_date>', methods=['GET'])
 def display_filtered_track(initials, car, start_date, end_date):
     # get waypoints for given variables
@@ -83,7 +81,7 @@ def display_filtered_track(initials, car, start_date, end_date):
         initials, car, start_date, end_date)
 
     # create map with default location germany
-    m = folium.Map(location=[51.1657, 10.4515], zoom_start=6)
+    map = folium.Map(location=[51.1657, 10.4515], zoom_start=6)
 
     if waypoints:
         # Create a PolyLine to connect the waypoints
@@ -91,7 +89,7 @@ def display_filtered_track(initials, car, start_date, end_date):
             locations=waypoints,
             color='blue',
             weight=3,
-        ).add_to(m)
+        ).add_to(map)
 
         # calculate map borders
         latitudes = [wp[0] for wp in waypoints]
@@ -101,10 +99,10 @@ def display_filtered_track(initials, car, start_date, end_date):
         bounds = [[min_lat, min_lon], [max_lat, max_lon]]
 
         # fit map to bounds of container
-        m.fit_bounds(bounds)
+        map.fit_bounds(bounds)
 
     # using private method _repr_html_ instead of render_html since the latter overwrites the css of the html body
-    map_html = m.get_root()._repr_html_()
+    map_html = map.get_root()._repr_html_()
     return map_html
 
 
