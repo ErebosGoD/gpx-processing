@@ -86,14 +86,11 @@ function displayFilteredTrack() {
         $.ajax({
             url: '/display_track/' + initials + '/' + selectedCar + '/' + startDate + '/' + endDate,
             method: 'GET',
-            success: function (data) {
-                // Check if there are waypoints in the response
-                if (data.waypoints && data.waypoints.length > 0) {
-                    // Waypoints vorhanden, Map aktualisieren
-                    $('.map-container').html(data.mapHtml);
-                } else {
-                    // Keine Waypoints gefunden, zeige Meldung an
-                    alert('No waypoints found in time frame.');
+            success: function (response) {
+                $('.map-container').html(response.mapHtml);
+
+                if (response.message == 'No waypoints found in the specified timeframe.') {
+                    alert(response.message);
                 }
             }
         });
@@ -102,6 +99,7 @@ function displayFilteredTrack() {
         alert('Please choose initials and enter start-/enddate');
     }
 }
+
 
 // Event-Handler for the "Anwenden" button
 $('#apply-filters').click(function () {

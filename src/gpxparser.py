@@ -167,6 +167,7 @@ class GpxParser():
         ''', (initials, car, start_date, end_date))
 
         waypoints = self.cursor.fetchall()
+
         if waypoints:
             return waypoints
         else:

@@ -100,10 +100,12 @@ def display_filtered_track(initials, car, start_date, end_date):
 
         # fit map to bounds of container
         map.fit_bounds(bounds)
-
-    # using private method _repr_html_ instead of render_html since the latter overwrites the css of the html body
-    map_html = map.get_root()._repr_html_()
-    return map_html
+        response = {'mapHtml': map.get_root()._repr_html_(),
+                    'message': 'Waypoints found.'}
+    else:
+        response = {'mapHtml': map.get_root()._repr_html_(),
+                    'message': 'No waypoints found in the specified timeframe.'}
+    return jsonify(response)
 
 
 # get cars that the driver with the given initials has driven
