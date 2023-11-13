@@ -43,7 +43,6 @@ $('#initials_select').change(function () {
     var initials = $(this).val();
     if (initials) {
         loadCars(initials);
-        displayTrack(null);
     }
 });
 
