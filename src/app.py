@@ -83,7 +83,7 @@ def display_filtered_track(initials, car, start_date, end_date):
     # create map with default location germany
     map = folium.Map(location=[51.1657, 10.4515], zoom_start=6)
 
-    if waypoints:
+    if type(waypoints) == list:
         # Create a PolyLine to connect the waypoints
         folium.PolyLine(
             locations=waypoints,

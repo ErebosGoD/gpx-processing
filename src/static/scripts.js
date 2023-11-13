@@ -86,8 +86,15 @@ function displayFilteredTrack() {
         $.ajax({
             url: '/display_track/' + initials + '/' + selectedCar + '/' + startDate + '/' + endDate,
             method: 'GET',
-            success: function (mapHtml) {
-                $('.map-container').html(mapHtml);
+            success: function (data) {
+                // Check if there are waypoints in the response
+                if (data.waypoints && data.waypoints.length > 0) {
+                    // Waypoints vorhanden, Map aktualisieren
+                    $('.map-container').html(data.mapHtml);
+                } else {
+                    // Keine Waypoints gefunden, zeige Meldung an
+                    alert('No waypoints found in time frame.');
+                }
             }
         });
     } else {

@@ -167,7 +167,10 @@ class GpxParser():
         ''', (initials, car, start_date, end_date))
 
         waypoints = self.cursor.fetchall()
-        return waypoints
+        if waypoints:
+            return waypoints
+        else:
+            return "No waypoints found"
 
     def get_track_ids_for_initials_id(self, initials):
         # get tracks for chosen initials
