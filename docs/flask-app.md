@@ -1,95 +1,94 @@
-```markdown
-# GPX Data Visualization App Documentation
+# GPX Data Visualization Application
 
-This documentation provides an overview of a Flask web application designed to visualize GPX (GPS Exchange Format) data on a map. The application utilizes the Flask web framework for backend processing and Folium for generating interactive maps. GPX data parsing and manipulation are handled by the `GpxParser` class.
+This documentation provides an overview of the Flask application for visualizing GPX (GPS Exchange Format) data using Folium maps.
 
 ## Table of Contents
+1. [Introduction](#introduction)
+2. [Installation](#installation)
+3. [Usage](#usage)
+4. [Routes](#routes)
+   - [1. Main Page](#1-main-page)
+   - [2. Old Version Page](#2-old-version-page)
+   - [3. Get Initials](#3-get-initials)
+   - [4. Get Tracks](#4-get-tracks)
+   - [5. Display Track](#5-display-track)
+   - [6. Display Filtered Track](#6-display-filtered-track)
+   - [7. Get Cars](#7-get-cars)
+   - [8. Reset Map](#8-reset-map)
 
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Usage](#usage)
-- [API Endpoints](#api-endpoints)
-- [License](#license)
+## Introduction <a name="introduction"></a>
 
-## Prerequisites
+This Flask application is designed to visualize GPX data on interactive maps using the Folium library. It utilizes a SQLite database (`gpxdata.db`) to store and retrieve GPS track information. The GPX files are stored in the `gpxdata` directory.
 
-Before running the application, ensure you have the following components installed:
+## Installation <a name="installation"></a>
 
-- Python 3.x
-- Flask
-- Folium
-- gpxpy
-
-## Installation
-
-1. Clone the repository to your local machine:
+1. Install the required Python packages:
    ```bash
-   git clone https://github.com/erebosgod/gpx-processing.git
+   pip install Flask folium
    ```
 
-2. Navigate to the project directory:
+2. Ensure that the required GPXParser module is available.
+
+3. Run the application:
    ```bash
-   cd gpx-processing
+   python <filename>.py
    ```
+   Replace `<filename>` with the name of the Python script containing the provided code.
 
-3. Install the required packages using `pip`:
-   ```bash
-   pip install flask folium gpxpy
-   ```
+## Usage <a name="usage"></a>
 
-## Usage
+Access the application through a web browser at `http://127.0.0.1:5000/`. The main page displays an interactive map with GPX tracks.
 
-To run the application, execute the following command within the project directory:
+## Routes <a name="routes"></a>
 
-```bash
-python app.py
-```
+### 1. Main Page (`/`) <a name="1-main-page"></a>
 
-This will start the Flask development server, and the application will be accessible at `http://localhost:5000` in your web browser.
+- **URL:** `/`
+- **Method:** GET
+- **Description:** Renders the main page displaying an interactive Folium map with GPX tracks.
+- **Actions:**
+  - Creates database tables if they don't exist.
+  - Parses and persists GPX data from the specified directory.
+  - Initializes the map with default location (Germany) and zoom level.
 
-## API Endpoints
+### 2. Old Version Page (`/old_version`) <a name="2-old-version-page"></a>
 
-### 1. `/`
+- **URL:** `/old_version`
+- **Method:** GET
+- **Description:** Renders an old version of the main page with an interactive Folium map.
 
-- **Method**: GET
-- **Description**: Renders the main page of the application with a default map centered on Germany. GPX data is parsed and displayed on the map.
-- **Parameters**: None
-- **Response**: HTML content with an embedded interactive map.
+### 3. Get Initials (`/get_initials`) <a name="3-get-initials"></a>
 
-### 2. `/get_initials`
+- **URL:** `/get_initials`
+- **Method:** GET
+- **Description:** Retrieves and returns the initials of the GPX data.
 
-- **Method**: GET
-- **Description**: Retrieves the initials of the drivers available in the GPX data.
-- **Parameters**: None
-- **Response**: JSON array containing driver initials.
+### 4. Get Tracks (`/get_tracks/<initials>`) <a name="4-get-tracks"></a>
 
-### 3. `/display_track/<initials>/<car>/<start_date>/<end_date>`
+- **URL:** `/get_tracks/<initials>`
+- **Method:** GET
+- **Description:** Retrieves and returns track IDs associated with a specific set of initials.
 
-- **Method**: GET
-- **Description**: Displays the GPX track on the map based on driver initials, car, start date, and end date.
-- **Parameters**:
-  - `initials`: Initials of the driver.
-  - `car`: Car identifier.
-  - `start_date`: Start date of the track (format: YYYY-MM-DD).
-  - `end_date`: End date of the track (format: YYYY-MM-DD).
-- **Response**: HTML content with an embedded interactive map displaying the specified track.
+### 5. Display Track (`/display_track/<int:track_id>`) <a name="5-display-track"></a>
 
-### 4. `/get_cars/<initials>`
+- **URL:** `/display_track/<int:track_id>`
+- **Method:** GET
+- **Description:** Displays a specific track on the map based on the provided track ID.
 
-- **Method**: GET
-- **Description**: Retrieves the cars driven by the driver with the given initials.
-- **Parameters**:
-  - `initials`: Initials of the driver.
-- **Response**: JSON array containing car information.
+### 6. Display Filtered Track (`/display_track/<initials>/<car>/<start_date>/<end_date>`) <a name="6-display-filtered-track"></a>
 
-### 5. `/reset_map`
+- **URL:** `/display_track/<initials>/<car>/<start_date>/<end_date>`
+- **Method:** GET
+- **Description:** Displays a filtered track on the map based on the provided initials, car, start date, and end date.
 
-- **Method**: GET
-- **Description**: Resets the map back to its default position (centered on Germany).
-- **Parameters**: None
-- **Response**: HTML content with an embedded interactive map centered on Germany.
+### 7. Get Cars (`/get_cars/<initials>`) <a name="7-get-cars"></a>
 
-## License
+- **URL:** `/get_cars/<initials>`
+- **Method:** GET
+- **Description:** Retrieves and returns the cars driven by a driver with the specified initials.
 
-This project is licensed under the [MIT License](LICENSE).
-```
+### 8. Reset Map (`/reset_map`) <a name="8-reset-map"></a>
+
+- **URL:** `/reset_map`
+- **Method:** GET
+- **Description:** Resets the map to its default position (Germany).

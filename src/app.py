@@ -77,8 +77,11 @@ def display_track(track_id):
 @app.route('/display_track/<initials>/<car>/<start_date>/<end_date>', methods=['GET'])
 def display_filtered_track(initials, car, start_date, end_date):
     # get waypoints for given variables
-    waypoints = gpx_parser.get_waypoints_for_track(
-        initials, car, start_date, end_date)
+    try:
+        waypoints = gpx_parser.get_waypoints_for_track(
+            initials, car, start_date, end_date)
+    except Exception as error:
+        print(error)
 
     # create map with default location germany
     map = folium.Map(location=[51.1657, 10.4515], zoom_start=6)

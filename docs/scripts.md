@@ -1,59 +1,57 @@
-# JavaScript File Documentation
+# GPX One Pager JavaScript Documentation
 
-The JavaScript file `scripts.js` provides client-side interactivity for the GPX Data Visualization application. It handles dark mode toggling, user input handling, and asynchronous requests to the server to retrieve and display GPX data.
+This documentation provides an overview of the JavaScript functions used in the GPX One Pager to enable dynamic interactions with the webpage.
 
-## Functions and Event Handlers
+## Table of Contents
+1. [Dark Mode Toggle](#dark-mode-toggle)
+2. [Initials Dropdown](#initials-dropdown)
+3. [Cars Dropdown](#cars-dropdown)
+4. [Filtered Track Display](#filtered-track-display)
+5. [Apply Filters Button](#apply-filters-button)
+6. [Reset Filters Button](#reset-filters-button)
+7. [Old Version Button](#old-version-button)
+8. [Page Startup](#page-startup)
 
-### `enableDarkMode()`
+## 1. Dark Mode Toggle <a name="dark-mode-toggle"></a>
 
-- **Description**: Enables dark mode by adding a `dark-mode` class to the `<body>` element.
+- **Function:** `enableDarkMode()`, `disableDarkMode()`
+- **Description:** Functions to enable and disable dark mode by adding or removing the 'dark-mode' class from the `body` element.
+- **Event:** Click event on the dark mode toggle button (`#dark-mode-toggle`).
 
-### `disableDarkMode()`
+## 2. Initials Dropdown <a name="initials-dropdown"></a>
 
-- **Description**: Disables dark mode by removing the `dark-mode` class from the `<body>` element.
+- **Function:** `loadInitials()`
+- **Description:** Uses AJAX to fetch distinct driver initials from the server and populates the initials dropdown (`#initials_select`).
+- **Event:** Page startup and click event on the initials dropdown.
 
-### `darkModeToggle` Event Handler
+## 3. Cars Dropdown <a name="cars-dropdown"></a>
 
-- **Description**: Toggles dark mode on button click by adding/removing the `dark-mode` class.
+- **Function:** `loadCars(initials)`
+- **Description:** Uses AJAX to fetch distinct cars associated with the selected initials and populates the cars dropdown (`#cars_select`).
+- **Event:** Change event on the initials dropdown (`#initials_select`).
 
-### `loadInitials()`
+## 4. Filtered Track Display <a name="filtered-track-display"></a>
 
-- **Description**: Sends an AJAX request to retrieve driver initials from the server and populates the corresponding dropdown menu.
+- **Function:** `displayFilteredTrack()`
+- **Description:** Uses AJAX to fetch and display the filtered track on the map based on selected initials, car, start date, and end date.
+- **Event:** Click event on the "Anwenden" button (`#apply-filters`).
 
-### `$('#initials_select').change()` Event Handler
+## 5. Apply Filters Button <a name="apply-filters-button"></a>
 
-- **Description**: Handles the selection of driver initials. Loads cars based on selected initials and initializes the track display.
+- **Event:** Click event on the "Anwenden" button (`#apply-filters`).
+- **Description:** Calls the `displayFilteredTrack()` function to apply the selected filters.
 
-### `loadCars(initials)`
+## 6. Reset Filters Button <a name="reset-filters-button"></a>
 
-- **Description**: Sends an AJAX request to retrieve cars associated with selected initials and populates the cars dropdown menu.
+- **Event:** Click event on the Reset button (`#reset-filters`).
+- **Description:** Clears all dropdown menus and date inputs, reloads initials, and updates the map to its default state using AJAX.
 
-### `$('#cars_select').change()` Event Handler
+## 7. Old Version Button <a name="old-version-button"></a>
 
-- **Description**: Handles the selection of cars and updates the `selectedCar` variable accordingly.
+- **Event:** Click event on the "Old Version" button (`#old-version-button`).
+- **Description:** Redirects the user to the old version of the GPX One Pager using the `window.location.href` property.
 
-### `displayFilteredTrack()`
+## 8. Page Startup <a name="page-startup"></a>
 
-- **Description**: Sends an AJAX request to the server to fetch and display the filtered track based on selected initials, car, start date, and end date.
-
-### `$('#apply-filters').click()` Event Handler
-
-- **Description**: Triggers the display of the filtered track when the user clicks the "Anwenden" (Apply) button.
-
-### `$('#reset-filters').click()` Event Handler
-
-- **Description**: Resets all filters, loads initials, and updates the map to its default state when the user clicks the "Reset" button.
-
-### `loadInitials()` on Page Startup
-
-- **Description**: Automatically loads driver initials when the page is loaded.
-
-## Note
-
-- **AJAX Requests**: The JavaScript file extensively uses AJAX (asynchronous JavaScript and XML) to communicate with the server-side application. AJAX requests are made to retrieve data from the server without requiring a page refresh, enabling a smooth user experience.
-
-- **Event Handling**: Event handlers are used to respond to user interactions such as button clicks and dropdown selections. These handlers trigger specific functions to update the user interface dynamically.
-
----
-
-*Note: This documentation covers the functions and event handlers within the `scripts.js` file of the GPX Data Visualization application.*
+- **Event:** Page load.
+- **Description:** Calls the `loadInitials()` function to populate the initials dropdown and set up the page for interaction.
