@@ -5,8 +5,8 @@ from gpxparser import GpxParser
 
 app = Flask(__name__, static_url_path='/static')
 
-DATABASE = r'src\gpxdata.db'
-GPX_DIRECTORY = r'src\gpxdata'
+DATABASE = 'src/gpxdata.db'
+GPX_DIRECTORY = 'src/gpxdata'
 
 
 @app.route('/', methods=['GET'])
